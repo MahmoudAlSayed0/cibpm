@@ -1,4 +1,5 @@
 import 'package:cibpm/logic/cubit/app_cubit.dart';
+import 'package:cibpm/screens/preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,7 +26,15 @@ class _HomeState extends State<Home> {
             child: Column(
               children: [
                 IconButton(
-                    onPressed: cubit.pickOnPressed, icon: Icon(Icons.camera))
+                    onPressed: () async {
+                      await cubit.pickOnPressed();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Preview(videoPath: cubit.videoPath!)));
+                    },
+                    icon: Icon(Icons.camera))
               ],
             ),
           ),

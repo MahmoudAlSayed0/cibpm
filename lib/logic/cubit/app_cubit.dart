@@ -11,7 +11,7 @@ class AppCubit extends Cubit<AppState> {
   AppCubit get(context) => BlocProvider.of(context);
   String? videoPath;
 
-  void pickOnPressed() async {
+  pickOnPressed() async {
     emit(CapturingVideo());
     await ImagePickerHelper.pickVideo(onPick: (file) async {
       await setVideoPath(file.path);
@@ -22,6 +22,7 @@ class AppCubit extends Cubit<AppState> {
     emit(VideoCaptured());
   }
 
+  compressOnPressed() {}
   setVideoPath(String path) async {
     emit(SettingVideoPath());
     videoPath = path;
