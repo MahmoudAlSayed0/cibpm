@@ -15,12 +15,19 @@ class _HomeState extends State<Home> {
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {},
       builder: (context, state) {
+        var cubit = AppCubit().get(context);
+
         return Scaffold(
           appBar: AppBar(
             title: Text('CIBPM'),
           ),
-          body: Column(
-            children: [],
+          body: Center(
+            child: Column(
+              children: [
+                IconButton(
+                    onPressed: cubit.pickOnPressed, icon: Icon(Icons.camera))
+              ],
+            ),
           ),
         );
       },
