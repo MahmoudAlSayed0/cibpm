@@ -50,15 +50,18 @@ class DioHelper {
     }
   }
 
-  static Future<RequestStatus> postVideo(path) async {
+  static Future<RequestStatus> postVideo(String path) async {
     FormData formData =
-        FormData.fromMap({'video': MultipartFile.fromFile(path)});
-    String postUrl = 'video';
+        FormData.fromMap({'video': await MultipartFile.fromFile(path)});
+    String postUrl = 'http://212.90.120.116:8000/video';
 
     Response? response;
     try {
-      response = await dio.post(
-        postUrl,
+      response = await dio.request(
+        'http://212.90.120.116:8000/video',
+        options: Options(
+          method: 'POST',
+        ),
         data: formData,
       );
       log(response.toString());

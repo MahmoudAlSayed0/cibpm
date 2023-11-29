@@ -13,7 +13,7 @@ class VideoCompressApi {
       );
     } catch (e) {
       VideoCompress.cancelCompression();
+      return null;
     }
-    return null;
   }
 }

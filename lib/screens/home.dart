@@ -31,8 +31,10 @@ class _HomeState extends State<Home> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  Preview(videoPath: cubit.videoPath!)));
+                              builder: (context) => Preview(
+                                    videoPath: cubit.videoPath!,
+                                    isCompressed: cubit.isCompressed,
+                                  )));
                     },
                     icon: Icon(Icons.camera))
               ],

@@ -6,8 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
 
 class Preview extends StatefulWidget {
-  const Preview({Key? key, required this.videoPath}) : super(key: key);
+  const Preview({Key? key, required this.videoPath, required this.isCompressed})
+      : super(key: key);
   final String videoPath;
+  final bool isCompressed;
 
   @override
   _PreviewState createState() => _PreviewState();
@@ -66,12 +68,23 @@ class _PreviewState extends State<Preview> {
                             : _controller.play();
                       });
                     }),
+                !cubit.isCompressed
+                    ? TextButton(
+                        onPressed: () async {
+                          await cubit.compressOnPressed(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Preview(
+                                        videoPath: cubit.videoPath!,
+                                        isCompressed: cubit.isCompressed,
+                                      )));
+                        },
+                        child: Text('Compress'),
+                      )
+                    : Container(),
                 TextButton(
-                  onPressed: () {},
-                  child: Text('Compress'),
-                ),
-                TextButton(
-                  onPressed: () {},
+                  onPressed: cubit.sendOnPressed,
                   child: Text('send '),
                 ),
                 IconButton(
@@ -80,8 +93,10 @@ class _PreviewState extends State<Preview> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  Preview(videoPath: cubit.videoPath!)));
+                              builder: (context) => Preview(
+                                    videoPath: cubit.videoPath!,
+                                    isCompressed: cubit.isCompressed,
+                                  )));
                     },
                     icon: Icon(Icons.camera))
               ],
