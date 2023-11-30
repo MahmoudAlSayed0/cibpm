@@ -20,3 +20,7 @@ final class VideoCompressed extends AppState {}
 final class SendingVideo extends AppState {}
 
 final class VideoSent extends AppState {}
+
+final class FetchingResults extends AppState {}
+
+final class ResultsFetched extends AppState {}

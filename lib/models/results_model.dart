@@ -5,8 +5,8 @@ class Vgg16 {
   Vgg16(this.meanSbp, this.meanDbp);
 
   Vgg16.fromMap(Map<String, dynamic> mapData) {
-    meanSbp = mapData['mean_sbp'];
-    meanDbp = mapData['mean_dbp'];
+    meanSbp = mapData['Mean SBP'].toString();
+    meanDbp = mapData['Mean DBP'].toString();
   }
 }
 
@@ -17,8 +17,8 @@ class ResNet101 {
   ResNet101(this.meanSbp, this.meanDbp);
 
   ResNet101.fromMap(Map<String, dynamic> mapData) {
-    meanSbp = mapData['mean_sbp'];
-    meanDbp = mapData['mean_dbp'];
+    meanSbp = mapData['Mean SBP'].toString();
+    meanDbp = mapData['Mean DBP'].toString();
   }
 }
 

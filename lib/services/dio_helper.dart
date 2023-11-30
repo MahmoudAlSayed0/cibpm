@@ -1,6 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cibpm/models/api_creds.dart';
+import 'package:cibpm/models/response_model.dart';
+import 'package:cibpm/models/results_model.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 
@@ -42,6 +45,7 @@ class DioHelper {
         postUrl,
         data: formData,
       );
+
       log(response.toString());
       return RequestStatus.success;
     } catch (e) {
@@ -50,7 +54,7 @@ class DioHelper {
     }
   }
 
-  static Future<RequestStatus> postVideo(String path) async {
+  static Future<ApiCreds> postVideo(String path) async {
     FormData formData =
         FormData.fromMap({'video': await MultipartFile.fromFile(path)});
     String postUrl = 'http://212.90.120.116:8000/video';
@@ -64,12 +68,37 @@ class DioHelper {
         ),
         data: formData,
       );
-      log(response.toString());
-      return RequestStatus.success;
+      ApiResponse data = ApiResponse.fromMap(response.data);
+      log(data.toString());
+      return ApiCreds(status: RequestStatus.success, response: data);
     } catch (e) {
       log(e.toString());
-      return RequestStatus.failure;
+      return ApiCreds(status: RequestStatus.failure);
     }
+  }
+
+  static Future<MessageResult> getResults(ApiResponse creds) async {
+    log('requested');
+    Response? response;
+    try {
+      response = await dio.get(
+        baseURL + 'result',
+        queryParameters: creds.toMap(),
+      );
+      log(response.toString());
+      Map<String, dynamic> data = response.data;
+      if (data.keys.contains('VGG16')) {
+        return MessageResult.fromMap(response!.data);
+      }
+    } on SocketException catch (e) {
+      log(e.message);
+    } catch (e) {
+      log(e.toString());
+    }
+    log('retrying in 5 seconds');
+    await Future.delayed(const Duration(seconds: 5));
+    log('retrying now...');
+    return getResults(creds);
   }
 
   static getWithRetry(FormData formData) async {

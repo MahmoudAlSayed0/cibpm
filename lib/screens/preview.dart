@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cibpm/logic/cubit/app_cubit.dart';
+import 'package:cibpm/screens/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
@@ -22,6 +23,7 @@ class _PreviewState extends State<Preview> {
     _controller = VideoPlayerController.file(File(widget.videoPath));
     _controller.initialize().then((value) => setState(() {
           _controller.setLooping(true);
+          _controller.setVolume(0);
           _controller.play();
         }));
     super.initState();
@@ -84,7 +86,11 @@ class _PreviewState extends State<Preview> {
                       )
                     : Container(),
                 TextButton(
-                  onPressed: cubit.sendOnPressed,
+                  onPressed: () async {
+                    await cubit.sendOnPressed();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => Result()));
+                  },
                   child: Text('send '),
                 ),
                 IconButton(
