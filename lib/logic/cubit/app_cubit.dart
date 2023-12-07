@@ -1,12 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:cibpm/models/api_creds.dart';
 import 'package:cibpm/models/response_model.dart';
 import 'package:cibpm/models/results_model.dart';
 import 'package:cibpm/services/compressor.dart';
 import 'package:cibpm/services/dio_helper.dart';
 import 'package:cibpm/services/image_picker.dart';
+import 'package:cibpm/services/image_processor.dart';
 import 'package:cibpm/services/progress_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +26,8 @@ class AppCubit extends Cubit<AppState> {
   bool gotResults = false;
   MessageResult? finalResults;
   int? difference;
+  List<CameraImage> imageList = [];
+  List<int> greensList = [];
 
   pickOnPressed() async {
     emit(CapturingVideo());
@@ -81,5 +85,25 @@ class AppCubit extends Cubit<AppState> {
 
     log('Video path set at ' + videoPath!);
     emit(VideoPathSet());
+  }
+
+  storeImage(CameraImage image) async {
+    emit(StoringImage());
+    imageList.add(image);
+    log(imageList.length.toString());
+    emit(ImageStored());
+  }
+
+  extractGreens() async {
+    emit(ExtractingGreens());
+    log('number of images is ${imageList.length.toString()}');
+    for (CameraImage image in imageList) {
+      int greens = await ImageProcessor.processImage(image);
+      greensList.add(greens);
+    }
+    log('numbre of green elements ${greensList.length.toString()}');
+    log('$greensList');
+
+    emit(GreensExtracted());
   }
 }

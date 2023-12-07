@@ -24,3 +24,11 @@ final class VideoSent extends AppState {}
 final class FetchingResults extends AppState {}
 
 final class ResultsFetched extends AppState {}
+
+class ImageStored extends AppState {}
+
+class StoringImage extends AppState {}
+
+class ExtractingGreens extends AppState {}
+
+class GreensExtracted extends AppState {}

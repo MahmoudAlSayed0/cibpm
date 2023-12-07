@@ -1,4 +1,5 @@
 import 'package:cibpm/logic/cubit/app_cubit.dart';
+import 'package:cibpm/screens/greens.dart';
 import 'package:cibpm/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AppCubit(),
-      child: MaterialApp(home: Home()),
+      child: MaterialApp(home: GreenExtractorScreen()),
     );
   }
 }
